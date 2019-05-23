@@ -1,7 +1,7 @@
 # huawei-honor-unlock-bootloader
 (Python 3)
 
-## 
+## Summary
 
 After closing the official EMUI website, which allowed you to retrieve the code to unlock the bootloader of Huawei/Honor phones, here is a python script to retrieve it by yourself.
 
@@ -27,7 +27,7 @@ It uses a bruteforce method, based on the Luhn algorithm and the iMEI identifier
 
 **The application doesn't work. Is there anything I should have installed?**
 
-Yes, it was developed in Kotlin for the Java Virtual Machine so it needs the JRE to run, version 1.8.171 or later. You can install the latest JRE from [here](https://java.com/en/download/).
+Yes, it was developed in python so it needs it to run, version 3. You can install the latest version from [here](https://www.python.org/downloads/).
 
 **The app on Windows doesn't detect my device even though it's connected and USB debugging is enabled. What could be the issue?**
 
