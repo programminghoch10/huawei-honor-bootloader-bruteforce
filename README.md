@@ -1,5 +1,4 @@
-# huawei-honor-unlock-bootloader
-(Python 3)
+## huawei-honor-unlock-bootloader (Python 3)
 
 ## Summary
 
