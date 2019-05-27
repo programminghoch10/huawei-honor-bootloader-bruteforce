@@ -20,8 +20,8 @@ def tryUnlockBootloader(checksum):
     
     while(unlock == False):
         sdrout = str(os.system('fastboot oem unlock '+str(algoOEMcode)))
-        sdrour = sdrout.split(' ')
-        for i in sdrour:
+        sdrout = sdrout.split(' ')
+        for i in sdrout:
             if i == 'success':
                 return(algoOEMcode)
 
