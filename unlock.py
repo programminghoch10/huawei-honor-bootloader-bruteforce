@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 """
-Sky' 💜 https://github.com/SkywalkerFR
-https://fr.wikipedia.org/wiki/Formule_de_Luhn
+SkyEmie_' 💜 https://github.com/SkyEmie
+https://en.wikipedia.org/wiki/Luhn_algorithm
 """
 
 import time
@@ -46,7 +46,7 @@ def luhn_checksum(imei):
 
 ##########################################################################################################################
 
-print('\n\n           Unlock Bootloader script - By Sky\'')
+print('\n\n           Unlock Bootloader script - By SkyEmie_\'')
 print('\n\n  (Please enable USB DEBBUG and OEM UNLOCK if the device isn\'t appear..)')
 print('  /!\ All data will be erased /!\\\n')
 input(' Press any key to detect device..\n')
