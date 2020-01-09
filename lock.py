@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Sky'
+SkyEmie_'
 """
 
 import time
@@ -11,7 +11,7 @@ import os
 import math
 
 
-print('\n\n           Lock Bootloader script - By Sky\'')
+print('\n\n           Lock Bootloader script - By SkyEmie_\'')
 print('\n\n  (Please enable USB DEBBUG and OEM UNLOCK if the device isn\'t appear..)')
 print('  /!\ All data will be erased /!\\\n')
 input(' Press any key to detect device..\n')
