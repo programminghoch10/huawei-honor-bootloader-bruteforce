@@ -19,11 +19,9 @@ I've only had the opportunity to test it on European versions only :
 ## Instructions
 ### Connecting a device in ADB mode
   
-1. Enable developer options in Android.
-    * Go to Settings > System > About device and tap ‘Build number’ seven times to enable developer options.
-2. Enable USB debugging in Android.
-    * Android One: Go to Settings > System > Developer options and enable USB debugging.
-3. Connect your device to the computer and launch the script. 
+1. Enable developer options in Android.  
+2. Enable USB debugging in Android.  
+3. Connect your device to the computer and launch the script.  
 ```batch
 C:\WINDOWS\system32> python unlock.py
 ```
