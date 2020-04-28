@@ -21,11 +21,11 @@ I've only had the opportunity to test it on European versions only (Honor 5x 8x 
 ```batch
 C:\WINDOWS\system32> python unlock.py
 ```
-The device is going to ask for authorisation, which you'll have to allow.
-4. Wait for the application to detect your device. The device info should appear.
-5. Enter (first) IMEI
-6. Start the bruteforce, (this may take several hours) so get a cup of coffee ☕ and go to sleep. 💫
-7. If the correct code is found, your phone will be instantly unlocked. (and all data erased too)
+The device is going to ask for authorisation, which you'll have to allow.  
+4. Wait for the application to detect your device. The device info should appear.  
+5. Enter (first) IMEI  
+6. Start the bruteforce, (this may take several hours) so get a cup of coffee ☕ and go to sleep. 💫  
+7. If the correct code is found, your phone will be instantly unlocked. (and all data erased too)  
   
   
   
