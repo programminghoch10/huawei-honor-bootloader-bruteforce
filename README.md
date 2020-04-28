@@ -6,7 +6,7 @@ After closing the official EMUI website, which allowed you to retrieve the code 
 
 It uses a bruteforce method, based on the Luhn algorithm and the iMEI identifier used by the manufacturer to generate the unlocking code.
 
-I've only had the opportunity to test it on European versions only.
+I've only had the opportunity to test it on European versions only (Honor 5x 8x and 9x - view 10 and 20 - 10 lite / Huawei p20 lite - Y6 2019 - p30).
   
   
   
@@ -23,11 +23,16 @@ C:\WINDOWS\system32> python unlock.py
 ```
 The device is going to ask for authorisation, which you'll have to allow.
 4. Wait for the application to detect your device. The device info should appear.
+5. Enter (first) IMEI
+6. Start the bruteforce, (this may take several hours) so get a cup of coffee ☕ and go to sleep. 💫
+7. If the correct code is found, your phone will be instantly unlocked. (and all data erased too)
+  
+  
   
 ## FAQ & Troubleshooting  
   
 **The application doesn't work. Is there anything I should have installed?**  
-Yes, it was developed in python so it needs it to run, version 3. You can install the latest version from [here](https://www.python.org/downloads/).
+Yes, it was developed in python so it needs it to run, version 3. You can install the latest version from [here](https://www.python.org/downloads/) or by using Windows Store.
   
 **The app on Windows doesn't detect my device even though it's connected and USB debugging is enabled. What could be the issue?**  
 Windows most likely doesn't recognise your device in ADB mode. Install the universal ADB drivers from [here](http://dl.adbdriver.com/upload/adbdriver.zip), reboot your PC and try again.
