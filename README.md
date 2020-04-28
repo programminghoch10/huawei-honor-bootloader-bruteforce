@@ -24,15 +24,15 @@ I've only had the opportunity to test it on European versions only.
 
 4. Wait for the application to detect your device. The device info should appear.
 
-## FAQ & Troubleshooting
+## FAQ & Troubleshooting  
 
-**The application doesn't work. Is there anything I should have installed?**
+**The application doesn't work. Is there anything I should have installed?**  
 
 Yes, it was developed in python so it needs it to run, version 3. You can install the latest version from [here](https://www.python.org/downloads/).
 
-**The app on Windows doesn't detect my device even though it's connected and USB debugging is enabled. What could be the issue?**
+**The app on Windows doesn't detect my device even though it's connected and USB debugging is enabled. What could be the issue?**  
 
 Windows most likely doesn't recognise your device in ADB mode. Install the universal ADB drivers from [here](http://dl.adbdriver.com/upload/adbdriver.zip), reboot your PC and try again.
 
-**My phone reboot every 5 failed attempts**
+**My phone reboot every 5 failed attempts**  
 Sorry.. I've seen this in a few people and I have no idea. Its look like an additional protection. It happens on some models, having the same version, identical.
