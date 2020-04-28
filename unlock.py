@@ -3,7 +3,6 @@
 
 """
 SkyEmie_' 💜 https://github.com/SkyEmie
-https://en.wikipedia.org/wiki/Luhn_algorithm
 """
 
 import time
@@ -11,19 +10,37 @@ import time
 import os
 import math
 
+
 ##########################################################################################################################
 
 def tryUnlockBootloader(checksum):
 
     unlock      = False
     algoOEMcode = 1000000000000000 #base
-    
+    save        = 0
+
     while(unlock == False):
+        os.system("title Bruteforce is running.. "+str(algoOEMcode)+" "+str(save))
         sdrout = str(os.system('fastboot oem unlock '+str(algoOEMcode)))
         sdrout = sdrout.split(' ')
+        save  +=1
+
         for i in sdrout:
             if i == 'success':
+                bak = open("unlock_code.txt", "w")
+                bak.write("Your saved bootloader code : "+str(algoOEMcode))
+                bak.close()
                 return(algoOEMcode)
+            if i == 'reboot':
+                print('\n\nSorry, your bootloader has additional protection that other models don\'t have\nI can\'t do anything.. :c\n\n')
+                input('Press any key to exit..\n')
+                exit()
+
+        if save == 200:
+            save = 0
+            bak = open("unlock_code.txt", "w")
+            bak.write("If you need to pick up where you left off,\nchange the algoOEMcode variable with #base comment to the following value :\n"+str(algoOEMcode))
+            bak.close()
 
         algoOEMcode = algoIncrementChecksum(algoOEMcode, checksum)
 
