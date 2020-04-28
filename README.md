@@ -19,7 +19,7 @@ I've only had the opportunity to test it on European versions only.
     * Android One: Go to Settings > System > Developer options and enable USB debugging.
 3. Connect your device to the computer and launch the script. 
 ```batch
-C:\Users\root> python unlock.py
+C:\WINDOWS\system32> python unlock.py
 ```
 The device is going to ask for authorisation, which you'll have to allow.
 4. Wait for the application to detect your device. The device info should appear.
