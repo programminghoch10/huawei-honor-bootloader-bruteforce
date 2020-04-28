@@ -6,7 +6,8 @@ After closing the official EMUI website, which allowed you to retrieve the code 
 
 It uses a bruteforce method, based on the Luhn algorithm and the iMEI identifier used by the manufacturer to generate the unlocking code.
 
-I've only had the opportunity to test it on European versions only (Honor 5x 8x and 9x - view 10 and 20 - 10 lite / Huawei p20 lite - Y6 2019 - p30).
+I've only had the opportunity to test it on European versions only  
+`(Honor 5x 8x and 9x - view 10 and 20 - 10 lite / Huawei p20 lite - Y6 2019 - p30)`.  
   
   
   
