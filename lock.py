@@ -29,6 +29,6 @@ os.system('fastboot oem relock '+OEM)
 os.system('fastboot getvar unlocked')
 os.system('fastboot reboot')
 
-print('\n\nDevice lock !)
+print('\n\nDevice lock !')
 input('Press any key to exit..\n')
 exit()
