@@ -57,6 +57,7 @@ def bruteforceBootloader(increment):
             print("Your bruteforce progress has been saved in \"unlock_code.txt\"")
 
         if (n%autorebootcount==0 and autoreboot):
+            print("Rebooting to prevent bootloader from rebooting...")
             os.system('fastboot reboot bootloader')
 
         algoOEMcode += increment
