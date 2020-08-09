@@ -69,14 +69,16 @@ def luhn_checksum(imei):
     return checksum % 10
 
 
+# Bruteforce setup:
+
 print('\n\n           Unlock Bootloader script - By SkyEmie_\'')
-print('\n\n  (Please enable USB DEBBUG and OEM UNLOCK if the device isn\'t appear..)')
-print('  /!\ All data will be erased /!\\\n')
-input(' Press any key to detect device..\n')
+print('\n\n  (You must enable USB DEBUGGING and OEM UNLOCK in the developer options of the target device...)')
+print('  !!! All data will be erased !!! \n')
+#input(' Press enter to detect device..\n')
 
 os.system('adb devices')
 
-print("Please select \"Always trust this computer\" in the adb dialog!")
+print("Please select \"Always allow from this computer\" in the adb dialog!")
 
 checksum = 1
 while (checksum != 0):
@@ -85,16 +87,14 @@ while (checksum != 0):
     if (checksum != 0):
         print('IMEI incorrect!')
 increment = int(math.sqrt(imei)*1024)
-input('Press any key to reboot your device..\n')
+input('Press enter to reboot your device...\n')
 os.system('adb reboot bootloader')
-input('Press any key when your device is ready.. (This may take time, depending on your cpu/serial port)\n')
+#input('Press enter when your device is ready... (This may take time, depending on your phone)\n')
 
 codeOEM = bruteforceBootloader(increment)
 
 os.system('fastboot getvar unlocked')
-os.system('fastboot reboot')
+#os.system('fastboot reboot')
 
-print('\n\nDevice unlock ! OEM CODE : '+codeOEM)
-print('(Keep it safe)\n')
-input('Press any key to exit..\n')
+print('\n\nDevice unlocked! OEM CODE: '+codeOEM+'\n')
 exit()
