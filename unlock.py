@@ -9,13 +9,13 @@ programminghoch10 https://github.com/programminghoch10
 import time
 #from flashbootlib import test
 import os
+import subprocess
 import math
 
 def bruteforceBootloader(increment):
 
 #    algoOEMcode = 0000000000000000
     algoOEMcode     = 1000000000000000  #base to start bruteforce from
-    algoOEMcode     = 1853054182318208  #entire brute force progress
     autoreboot      = False             #set this to True if you need to prevent the automatic reboot to system by the bootloader after x failed attempts, code will automatically set this to true if it detects a reboot by the bootloader
     autorebootcount = 4                 #reboot every x attemps if autoreboot is True, set this one below the automatic reboot by the bootloader
     savecount       = 200               #save progress every 200 attempts, do not set too low to prevent storage wearout
@@ -23,22 +23,26 @@ def bruteforceBootloader(increment):
     unlock=False
     n=0
     while (unlock == False):
-        print("echo Bruteforce is running...\nCurrently testing code "+str(algoOEMcode).zfill(16)+"\nProgress: "+str(round((algoOEMcode/10000000000000000)*100, 2))+"%")
-        sdrout = str(os.system('fastboot oem unlock '+ str(algoOEMcode).zfill(16)))
-        sdrout = sdrout.split(' ')
+        print("Bruteforce is running...\nCurrently testing code "+str(algoOEMcode).zfill(16)+"\nProgress: "+str(round((algoOEMcode/10000000000000000)*100, 2))+"%")
+        sdrout = subprocess.run("fastboot oem unlock " + str(algoOEMcode).zfill(16), shell=True, stderr=subprocess.PIPE).stderr.decode('utf-8')
+        print(sdrout)
+        sdrout = sdrout.lower()
         n+=1
 
-        for i in sdrout:
-            if i == 'success':
-                bak = open("unlock_code.txt", "w")
-                bak.write("Your saved bootloader code : "+str(algoOEMcode))
-                bak.close()
-                print("Your bruteforce result has been saved in \"unlock_code.txt\"")
-                return(algoOEMcode)
-            if i == 'reboot':
-                os.system("adb wait-for-device")
-                os.system("adb reboot bootloader")
-                autoreboot = True
+        if 'success' in sdrout:
+            bak = open("unlock_code.txt", "w")
+            bak.write("Your saved bootloader code : "+str(algoOEMcode))
+            bak.close()
+            print("Your bruteforce result has been saved in \"unlock_code.txt\"")
+            return(algoOEMcode)
+        if 'reboot' in sdrout:
+            print("Target device has bruteforce protection!")
+            print("Waiting for reboot and trying again...")
+            os.system("adb wait-for-device")
+            os.system("adb reboot bootloader")
+            print("Device reboot requested, turning on reboot workaround.")
+            autoreboot = True
+        # do something if both not found
 
         if (n%savecount==0):
             bak = open("unlock_code.txt", "w")
@@ -71,7 +75,7 @@ def luhn_checksum(imei):
 
 # Bruteforce setup:
 
-print('\n\n           Unlock Bootloader script - By SkyEmie_\'')
+print('\n\n           Unlock Bootloader script - By SkyEmie_\' and programminghoch10')
 print('\n\n  (You must enable USB DEBUGGING and OEM UNLOCK in the developer options of the target device...)')
 print('  !!! All data will be erased !!! \n')
 #input(' Press enter to detect device..\n')
