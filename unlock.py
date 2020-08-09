@@ -101,9 +101,9 @@ print("Please select \"Always allow from this computer\" in the adb dialog!")
 
 checksum = 1
 while (checksum != 0):
-    if staticimei > 0: 
+    if staticimei == 0: 
         imei = int(input('Type IMEI: '))
-    if staticimei == 0:
+    if staticimei > 0:
         imei = staticimei
     checksum = luhn_checksum(imei)
     if (checksum != 0):
