@@ -19,30 +19,36 @@ def bruteforceBootloader(increment):
     autoreboot      = False             #set this to True if you need to prevent the automatic reboot to system by the bootloader after x failed attempts, code will automatically set this to true if it detects a reboot by the bootloader
     autorebootcount = 4                 #reboot every x attemps if autoreboot is True, set this one below the automatic reboot by the bootloader
     savecount       = 200               #save progress every 200 attempts, do not set too low to prevent storage wearout
+    unknownfail     = True              #fail if output is unknown, only switch to False if you have problems with this
     
     unlock=False
     n=0
     while (unlock == False):
         print("Bruteforce is running...\nCurrently testing code "+str(algoOEMcode).zfill(16)+"\nProgress: "+str(round((algoOEMcode/10000000000000000)*100, 2))+"%")
-        sdrout = subprocess.run("fastboot oem unlock " + str(algoOEMcode).zfill(16), shell=True, stderr=subprocess.PIPE).stderr.decode('utf-8')
-        print(sdrout)
-        sdrout = sdrout.lower()
+        output = subprocess.run("fastboot oem unlock " + str(algoOEMcode).zfill(16), shell=True, stderr=subprocess.PIPE).stderr.decode('utf-8')
+        print(output)
+        output = output.lower()
         n+=1
 
-        if 'success' in sdrout:
+        if 'success' in output:
             bak = open("unlock_code.txt", "w")
             bak.write("Your saved bootloader code : "+str(algoOEMcode))
             bak.close()
             print("Your bruteforce result has been saved in \"unlock_code.txt\"")
             return(algoOEMcode)
-        if 'reboot' in sdrout:
+        if 'reboot' in output:
             print("Target device has bruteforce protection!")
             print("Waiting for reboot and trying again...")
             os.system("adb wait-for-device")
             os.system("adb reboot bootloader")
             print("Device reboot requested, turning on reboot workaround.")
             autoreboot = True
-        # do something if both not found
+        if 'success' not in output and 'reboot' not in output and unknownfail:
+            # fail here to prevent continuing bruteforce on success or another error the script cant handle
+            print("Could not parse output.")
+            print("Please check the output above yourself.")
+            print("If you want to disable this feature, switch variable unknownfail to False")
+            exit()
 
         if (n%savecount==0):
             bak = open("unlock_code.txt", "w")
