@@ -12,6 +12,8 @@ import os
 import subprocess
 import math
 
+staticimei = 0          #enter your imei here if you dont want to be asked every start
+
 def bruteforceBootloader(increment):
 
 #    algoOEMcode = 0000000000000000
@@ -93,10 +95,15 @@ print("Please select \"Always allow from this computer\" in the adb dialog!")
 
 checksum = 1
 while (checksum != 0):
-    imei = int(input('Type IMEI: '))
+    if staticimei > 0: 
+        imei = int(input('Type IMEI: '))
+    if staticimei == 0:
+        imei = staticimei
     checksum = luhn_checksum(imei)
     if (checksum != 0):
         print('IMEI incorrect!')
+        if(staticimei > 0):
+            exit()
 increment = int(math.sqrt(imei)*1024)
 input('Press enter to reboot your device...\n')
 os.system('adb reboot bootloader')
