@@ -13,6 +13,7 @@ import subprocess
 import math
 
 staticimei = 0          #enter your imei here if you dont want to be asked every start
+quickstart = False      #set to True to not need to confirm on script start, should be used in combination with staticimei
 
 def bruteforceBootloader(increment):
 
@@ -110,7 +111,8 @@ while (checksum != 0):
         if(staticimei > 0):
             exit()
 increment = int(math.sqrt(imei)*1024)
-input('Press enter to reboot your device...\n')
+if quickstart==False:
+    input('Press enter to reboot your device...\n')
 os.system('adb reboot bootloader')
 #input('Press enter when your device is ready... (This may take time, depending on your phone)\n')
 
