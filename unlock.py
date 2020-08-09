@@ -23,6 +23,8 @@ def bruteforceBootloader(increment):
     savecount       = 200               #save progress every 200 attempts, do not set too low to prevent storage wearout
     unknownfail     = True              #fail if output is unknown, only switch to False if you have problems with this
     
+    failmsg = "check password failed"   #used to check if code is wrong
+    
     unlock=False
     n=0
     while (unlock == False):
@@ -45,7 +47,10 @@ def bruteforceBootloader(increment):
             os.system("adb reboot bootloader")
             print("Device reboot requested, turning on reboot workaround.")
             autoreboot = True
-        if 'success' not in output and 'reboot' not in output and unknownfail:
+        if failmsg in output:
+            #print("Code " + str(algoOEMcode) + " is wrong, trying next one...")
+            pass
+        if 'success' not in output and 'reboot' not in output and failmsg not in output and unknownfail:
             # fail here to prevent continuing bruteforce on success or another error the script cant handle
             print("Could not parse output.")
             print("Please check the output above yourself.")
