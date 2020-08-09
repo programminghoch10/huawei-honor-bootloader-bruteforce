@@ -10,10 +10,10 @@ import time
 import os
 import math
 
+def tryUnlockBootloader(increment):
 
 ##########################################################################################################################
 
-def tryUnlockBootloader(checksum):
 
     unlock      = False
     algoOEMcode = 1000000000000000 #base
@@ -42,12 +42,9 @@ def tryUnlockBootloader(checksum):
             bak.write("If you need to pick up where you left off,\nchange the algoOEMcode variable with #base comment to the following value :\n"+str(algoOEMcode))
             bak.close()
 
-        algoOEMcode = algoIncrementChecksum(algoOEMcode, checksum)
 
 
-def algoIncrementChecksum(genOEMcode, checksum):
-    genOEMcode+=int(checksum+math.sqrt(imei)*1024)
-    return(genOEMcode)
+        algoOEMcode += increment
 
 def luhn_checksum(imei):
     def digits_of(n):
@@ -70,13 +67,20 @@ input(' Press any key to detect device..\n')
 
 os.system('adb devices')
 
-imei     = int(input('Type IMEI digit :'))
-checksum = luhn_checksum(imei)
+print("Please select \"Always trust this computer\" in the adb dialog!")
+
+checksum = 1
+while (checksum != 0):
+    imei = int(input('Type IMEI: '))
+    checksum = luhn_checksum(imei)
+    if (checksum != 0):
+        print('IMEI incorrect!')
+increment = int(math.sqrt(imei)*1024)
 input('Press any key to reboot your device..\n')
 os.system('adb reboot bootloader')
 input('Press any key when your device is ready.. (This may take time, depending on your cpu/serial port)\n')
 
-codeOEM = tryUnlockBootloader(checksum)
+codeOEM = tryUnlockBootloader(increment)
 
 os.system('fastboot getvar unlocked')
 os.system('fastboot reboot')
