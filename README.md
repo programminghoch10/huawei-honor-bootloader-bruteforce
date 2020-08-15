@@ -1,4 +1,4 @@
-# Huawei-honor-unlock-bootloader
+# huawei-honor-unlock-bootloader
 
 ## Summary
 
