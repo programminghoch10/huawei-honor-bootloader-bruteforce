@@ -1,12 +1,10 @@
-# Huawei-honor-unlock-bootloader
+# huawei-honor-unlock-bootloader
 
 ## Summary
 
 After closing the official EMUI website,
 which allowed you to retrieve the code to unlock the bootloader of Huawei/Honor phones, 
-here is a python script to test many possible codes.
-
-It uses a bruteforce method, based on the IMEI identifier to generate unlocking codes.
+here is a python script to test random codes.
 
 This will most likely only work on European versions, 
 because these only use numbers in the bootloader unlock code.
@@ -17,6 +15,7 @@ I've only had the opportunity to test it on European versions:
 - Honor  10 lite
 - Huawei p20 lite
 - Huawei Y6 2019
+- Huawei P20 Pro
 - Huawei p30
 
 
@@ -37,9 +36,8 @@ I've only had the opportunity to test it on European versions:
     The device is going to ask for authorisation, which you'll have to allow.  
     Please also check the checkbox "Always allow from this computer".
 1. Wait for the application to detect your device. The device info should appear.
-1. Enter the (first) IMEI.
 1. Start the bruteforce.  
-    (this may take several ~~hours~~ days) so get a cup of coffee ☕ and go to sleep. 💫 
+    (this may take several ~~hours~~ thousand years) so ~~get a cup of coffee ☕ and go to sleep 💫~~ live your life and forget about this.
 1. If the correct code is found, your phone will either be instantly unlocked or prompt you with an additional confirmation dialogue on the target device.  
     (all data will be erased on unlock!)
 
