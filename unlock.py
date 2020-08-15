@@ -11,7 +11,9 @@ import time
 import os
 import subprocess
 import random
+import string
 
+useletters = False      #set to True to include letters for random code generation
 quickstart = False      #set to True to not need to confirm on script start
 
 def bruteforceBootloader():
@@ -27,17 +29,20 @@ def bruteforceBootloader():
     algoOEMcode     = 0 
     while (unlock == False):
         
-        algoOEMcode = random.randint(0,9999999999999999)
-        
-        print("Bruteforce is running...\nCurrently testing code "+str(algoOEMcode).zfill(16))
-        output = subprocess.run("fastboot oem unlock " + str(algoOEMcode).zfill(16), shell=True, stderr=subprocess.PIPE).stderr.decode('utf-8')
+        if useletters:
+            algoOEMcode = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(16))
+        else:
+            algoOEMcode = str(random.randint(0,9999999999999999)).zfill(16)
+                
+        print("Bruteforce is running...\nCurrently testing code "+ algoOEMcode)
+        output = subprocess.run("fastboot oem unlock " + algoOEMcode, shell=True, stderr=subprocess.PIPE).stderr.decode('utf-8')
         print(output)
         output = output.lower()
         n+=1
 
         if 'success' in output:
             bak = open("unlock_code.txt", "w")
-            bak.write("Your saved bootloader code : "+str(algoOEMcode))
+            bak.write("Your saved bootloader code : "+algoOEMcode)
             bak.close()
             print("Your bruteforce result has been saved in \"unlock_code.txt\"")
             return(algoOEMcode)
@@ -49,7 +54,7 @@ def bruteforceBootloader():
             print("Device reboot requested, turning on reboot workaround.")
             autoreboot = True
         if failmsg in output:
-            #print("Code " + str(algoOEMcode) + " is wrong, trying next one...")
+            #print("Code " + algoOEMcode + " is wrong, trying next one...")
             pass
         if 'success' not in output and 'reboot' not in output and failmsg not in output and unknownfail:
             # fail here to prevent continuing bruteforce on success or another error the script cant handle
