@@ -3,51 +3,77 @@
 
 """
 SkyEmie_' 💜 https://github.com/SkyEmie
+programminghoch10 https://github.com/programminghoch10
 """
 
 import time
 #from flashbootlib import test
 import os
+import subprocess
 import math
 
+staticimei = 0          #enter your imei here if you dont want to be asked every start
+quickstart = False      #set to True to not need to confirm on script start, should be used in combination with staticimei
 
-##########################################################################################################################
+def bruteforceBootloader(increment):
 
-def tryUnlockBootloader(checksum):
+#    algoOEMcode = 0000000000000000
+    algoOEMcode     = 1000000000000000  #base to start bruteforce from
+    autoreboot      = False             #set this to True if you need to prevent the automatic reboot to system by the bootloader after x failed attempts, code will automatically set this to true if it detects a reboot by the bootloader
+    autorebootcount = 4                 #reboot every x attemps if autoreboot is True, set this one below the automatic reboot by the bootloader
+    savecount       = 200               #save progress every 200 attempts, do not set too low to prevent storage wearout
+    unknownfail     = True              #fail if output is unknown, only switch to False if you have problems with this
+    
+    failmsg = "check password failed"   #used to check if code is wrong
+    
+    unlock=False
+    n=0
+    while (unlock == False):
+        print("Bruteforce is running...\nCurrently testing code "+str(algoOEMcode).zfill(16)+"\nProgress: "+str(round((algoOEMcode/10000000000000000)*100, 2))+"%")
+        output = subprocess.run("fastboot oem unlock " + str(algoOEMcode).zfill(16), shell=True, stderr=subprocess.PIPE).stderr.decode('utf-8')
+        print(output)
+        output = output.lower()
+        n+=1
 
-    unlock      = False
-    algoOEMcode = 1000000000000000 #base
-    save        = 0
+        if 'success' in output:
+            bak = open("unlock_code.txt", "w")
+            bak.write("Your saved bootloader code : "+str(algoOEMcode))
+            bak.close()
+            print("Your bruteforce result has been saved in \"unlock_code.txt\"")
+            return(algoOEMcode)
+        if 'reboot' in output:
+            print("Target device has bruteforce protection!")
+            print("Waiting for reboot and trying again...")
+            os.system("adb wait-for-device")
+            os.system("adb reboot bootloader")
+            print("Device reboot requested, turning on reboot workaround.")
+            autoreboot = True
+        if failmsg in output:
+            #print("Code " + str(algoOEMcode) + " is wrong, trying next one...")
+            pass
+        if 'success' not in output and 'reboot' not in output and failmsg not in output and unknownfail:
+            # fail here to prevent continuing bruteforce on success or another error the script cant handle
+            print("Could not parse output.")
+            print("Please check the output above yourself.")
+            print("If you want to disable this feature, switch variable unknownfail to False")
+            exit()
 
-    while(unlock == False):
-        os.system("title Bruteforce is running.. "+str(algoOEMcode)+" "+str(save))
-        sdrout = str(os.system('fastboot oem unlock '+str(algoOEMcode)))
-        sdrout = sdrout.split(' ')
-        save  +=1
-
-        for i in sdrout:
-            if i == 'success':
-                bak = open("unlock_code.txt", "w")
-                bak.write("Your saved bootloader code : "+str(algoOEMcode))
-                bak.close()
-                return(algoOEMcode)
-            if i == 'reboot':
-                print('\n\nSorry, your bootloader has additional protection that other models don\'t have\nI can\'t do anything.. :c\n\n')
-                input('Press any key to exit..\n')
-                exit()
-
-        if save == 200:
-            save = 0
+        if (n%savecount==0):
             bak = open("unlock_code.txt", "w")
             bak.write("If you need to pick up where you left off,\nchange the algoOEMcode variable with #base comment to the following value :\n"+str(algoOEMcode))
             bak.close()
+            print("Your bruteforce progress has been saved in \"unlock_code.txt\"")
 
-        algoOEMcode = algoIncrementChecksum(algoOEMcode, checksum)
+        if (n%autorebootcount==0 and autoreboot):
+            print("Rebooting to prevent bootloader from rebooting...")
+            os.system('fastboot reboot bootloader')
 
+        algoOEMcode += increment
 
-def algoIncrementChecksum(genOEMcode, checksum):
-    genOEMcode+=int(checksum+math.sqrt(imei)*1024)
-    return(genOEMcode)
+        if (algoOEMcode > 10000000000000000):
+            print("OEM Code not found!\n")
+            os.system("fastboot reboot")
+            exit()
 
 def luhn_checksum(imei):
     def digits_of(n):
@@ -61,27 +87,39 @@ def luhn_checksum(imei):
         checksum += sum(digits_of(i*2))
     return checksum % 10
 
-##########################################################################################################################
 
-print('\n\n           Unlock Bootloader script - By SkyEmie_\'')
-print('\n\n  (Please enable USB DEBBUG and OEM UNLOCK if the device isn\'t appear..)')
-print('  /!\ All data will be erased /!\\\n')
-input(' Press any key to detect device..\n')
+# Bruteforce setup:
+
+print('\n\n           Unlock Bootloader script - By SkyEmie_\' and programminghoch10')
+print('\n\n  (You must enable USB DEBUGGING and OEM UNLOCK in the developer options of the target device...)')
+print('  !!! All data will be erased !!! \n')
+#input(' Press enter to detect device..\n')
 
 os.system('adb devices')
 
-imei     = int(input('Type IMEI digit :'))
-checksum = luhn_checksum(imei)
-input('Press any key to reboot your device..\n')
-os.system('adb reboot bootloader')
-input('Press any key when your device is ready.. (This may take time, depending on your cpu/serial port)\n')
+print("Please select \"Always allow from this computer\" in the adb dialog!")
 
-codeOEM = tryUnlockBootloader(checksum)
+checksum = 1
+while (checksum != 0):
+    if staticimei == 0: 
+        imei = int(input('Type IMEI: '))
+    if staticimei > 0:
+        imei = staticimei
+    checksum = luhn_checksum(imei)
+    if (checksum != 0):
+        print('IMEI incorrect!')
+        if(staticimei > 0):
+            exit()
+increment = int(math.sqrt(imei)*1024)
+if quickstart==False:
+    input('Press enter to reboot your device...\n')
+os.system('adb reboot bootloader')
+#input('Press enter when your device is ready... (This may take time, depending on your phone)\n')
+
+codeOEM = bruteforceBootloader(increment)
 
 os.system('fastboot getvar unlocked')
-os.system('fastboot reboot')
+#os.system('fastboot reboot')
 
-print('\n\nDevice unlock ! OEM CODE : '+codeOEM)
-print('(Keep it safe)\n')
-input('Press any key to exit..\n')
+print('\n\nDevice unlocked! OEM CODE: '+codeOEM+'\n')
 exit()
