@@ -60,3 +60,6 @@ The script will also automatically detect this behaviour. For this to work relia
 **- The script displays "command invalid"**  
 Huawei has removed the unlock command in EMUI 10.  
 Downgrade your software and try again.
+
+**- I get a "no permissions" error or execution just hangs with < waiting for any device >**
+You need to run this script as root or you can install the `android-udev` or `android-udev-git` (AUR) package for arch, for debian based distros please follow [this guide](https://stackoverflow.com/a/28127944).
